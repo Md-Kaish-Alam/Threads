@@ -26,7 +26,7 @@ export async function createThread({ text, author, commuintyId, path }: Params) 
 
         await User.findByIdAndUpdate(author, {
             $push: {
-                threads: createThread._id,
+                threads: createdThread._id,
             }
         })
 
@@ -38,8 +38,8 @@ export async function createThread({ text, author, commuintyId, path }: Params) 
 
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
-    connectToDB();
     try {
+        connectToDB();
 
         // Calculate the number of posts to skip
         const skipAmount = (pageNumber - 1) * pageSize;
@@ -73,9 +73,9 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
 }
 
 export async function fetchThreadById(id: string){
-    connectToDB();
-
+    
     try {
+        connectToDB();
 
         // TODO: Populate the community thread
 
@@ -114,9 +114,9 @@ export async function fetchThreadById(id: string){
 
 
 export async function addCommentToThread(threadId: string, commentText: string, userId: string, path: string){
-    connectToDB();
-
+    
     try {
+        connectToDB();
         // addmin a comment to the thread
         // find the original thread by it's id
 
