@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
 import { ThredValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
+import { useOrganization } from "@clerk/nextjs";
 
 interface Props {
     user: {
@@ -36,6 +37,7 @@ const PostThread = ({ userId }: { userId: string }) => {
     
     const router = useRouter();
     const pathname = usePathname();
+    const { organization } = useOrganization();
 
     const form = useForm({
         resolver: zodResolver(ThredValidation),
@@ -46,13 +48,13 @@ const PostThread = ({ userId }: { userId: string }) => {
     });
 
     const onSubmit = async (values: z.infer<typeof ThredValidation>) => {
+        console.log('org', organization)
         await createThread({
             text: values.thread,
             author: userId,
-            commuintyId: null,
+            communityId: organization ? organization.id : null,
             path: pathname
         });
-
         router.push('/')
     }
 
